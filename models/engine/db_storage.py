@@ -33,8 +33,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """
-        query on the current database session (self.__session) 
+        """query on the current database session (self.__session)
         all objects depending of the class name (argument cls)
         """
         if not cls:
