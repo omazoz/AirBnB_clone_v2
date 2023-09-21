@@ -29,11 +29,15 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
-        """to delete obj from __objects if it’s inside - if obj is equal to None"""
-        if not obj:
-            return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        del FileStorage.__objects[key]
+        """delete object
+        """
+        if obj:
+            id = obj.to_dict()["id"]
+            className = obj.to_dict()["__class__"]
+            keyName = className+"."+id
+            if keyName in FileStorage.__objects:
+                del (FileStorage.__objects[keyName])
+                self.save()
 
     def reload(self):
         """Loads storage dictionary from file"""
