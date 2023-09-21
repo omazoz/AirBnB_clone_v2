@@ -18,7 +18,7 @@ else:
 
 class BaseModel:
     """ class BaseModel """
-    if models.is_type == "db":
+    if storage_type == "db":
         id = Column(String(60), primary_key=True, nullable=False)
         created_at = Column(DateTime, default=datetime.utcnow())
         updated_at = Column(DateTime, default=datetime.utcnow())
