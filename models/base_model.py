@@ -5,9 +5,12 @@ from datetime import datetime
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import models
+from os import getenv
+
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
-if models.is_type == "db":
+if storage_type == "db":
     Base = declarative_base()
 else:
     Base = object
