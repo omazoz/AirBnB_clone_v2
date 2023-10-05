@@ -26,3 +26,6 @@ def do_deploy(archive_path):
         run("tar -xzf {} -C {}/".format(tmp, no_tgz))
         run("rm {}".format(tmp))
         run("mv {}/web_static/* {}/".format(no_tgz, no_tgz))
+        return True
+    except BaseException:
+        return False
