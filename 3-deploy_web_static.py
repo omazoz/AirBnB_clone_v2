@@ -9,15 +9,14 @@ env.hosts = ['54.89.109.168', '54.157.141.86']
 
 
 def do_pack():
-    """Creates a tgz archive"""
-    try:
-        date = datetime.now().strftime("%Y%m%d%H%M%S")
-        if isdir("versions") is False:
-            local("mkdir versions")
-        filename = "versions/web_static_{}.tgz".format(date)
-        local("tar -cvzf {} web_static".format(filename))
+    """ Fabric script that generates a .tgz archive"""
+    local("sudo mkdir -p versions")
+    gndate = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = "versions/web_static_{}.tgz".format(gndate)
+    result = local("sudo tar -cvzf {} web_static".format(filename))
+    if result.succeeded:
         return filename
-    except Exception as ex:
+    else:
         return None
 
 

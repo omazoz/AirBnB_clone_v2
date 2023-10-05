@@ -11,6 +11,18 @@ import os
 env.hosts = ['54.89.109.168', '54.157.141.86']
 
 
+def do_pack():
+    """ Fabric script that generates a .tgz archive"""
+    local("sudo mkdir -p versions")
+    gndate = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = "versions/web_static_{}.tgz".format(gndate)
+    result = local("sudo tar -cvzf {} web_static".format(filename))
+    if result.succeeded:
+        return filename
+    else:
+        return None
+
+
 def do_deploy(archive_path):
     """ deploy an archive to  servers
     """
