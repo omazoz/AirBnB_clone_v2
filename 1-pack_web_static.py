@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Author:Talaini
+"""Author: Talaini
   function do_pack that generates a .tgz archive"""
 
 
