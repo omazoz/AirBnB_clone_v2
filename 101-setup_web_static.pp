@@ -1,62 +1,30 @@
-# Script that configures Nginx server with some static html
-
+#Author Mazoz
+#Script that configures Nginx server with some static html
 exec {'update':
-  provider => shell,
-  command  => 'sudo apt-get -y update',
-  before   => Exec['install Nginx'],
+  command => '/usr/bin/apt-get update',
 }
-
-exec {'install Nginx':
-  provider => shell,
-  command  => 'sudo apt-get -y install nginx',
-  before   => Exec['start Nginx'],
+-> package { 'nginx':
+  ensure => installed,
 }
-
-exec {'start Nginx':
-  provider => shell,
-  command  => 'sudo service nginx start',
-  before   => Exec['create first directory'],
+-> exec { 'create data':
+  command => '/usr/bin/mkdir -p "/data/web_static/releases/test/" "/data/web_static/shared/"',
 }
-
-exec {'create first directory':
-  provider => shell,
-  command  => 'sudo mkdir -p /data/web_static/releases/test/',
-  before   => Exec['create second directory'],
+-> exec { 'index':
+  command => '/usr/bin/echo "Hi!" | sudo tee /data/web_static/releases/test/index.html > /dev/null',
 }
-
-exec {'create second directory':
-  provider => shell,
-  command  => 'sudo mkdir -p /data/web_static/shared/',
-  before   => Exec['content into html'],
+-> exec { 'remove current':
+  command => '/usr/bin/rm -rf /data/web_static/current',
 }
-
-exec {'content into html':
-  provider => shell,
-  command  => 'echo "alx talaini" | sudo tee /data/web_static/releases/test/index.html',
-  before   => Exec['symbolic link'],
+-> exec { 'simbolic':
+  command => '/usr/bin/ln -s /data/web_static/releases/test/ /data/web_static/current',
 }
-
-exec {'symbolic link':
-  provider => shell,
-  command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
-  before   => Exec['put location'],
+-> exec { 'chmod data':
+  command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
 }
-
-exec {'put location':
+-> exec { 'hbnb_static':
+  command => 'sudo sed -i "/^server {/a \ \n\tlocation \/hbnb_static {alias /data/web_static/current/;index index.html;}" /etc/nginx/sites-enabled/default',
   provider => shell,
-  command  => 'sudo sed -i \'38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}\n\' /etc/nginx/sites-available/default',
-  before   => Exec['restart Nginx'],
 }
-
-exec {'restart Nginx':
-  provider => shell,
-  command  => 'sudo service nginx restart',
-  before   => File['/data/']
-}
-
-file {'/data/':
-  ensure  => directory,
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  recurse => true,
+-> exec { 'restart':
+  command => '/usr/sbin/service nginx restart',
 }
