@@ -8,7 +8,7 @@ from datetime import datetime
 from os.path import exists
 import os
 "<IP web-01>, <IP web-02>"
-env.hosts = ['54.89.109.168', '54.157.141.86']
+env.hosts = ['54.173.140.10', '3.85.1.16']
 
 
 def do_pack():
