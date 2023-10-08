@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Author: Talaini
+"""Author: omazoz
    a Fabric script that distributes an archive to  web servers"""
 
 
