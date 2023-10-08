@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" Author: Talaini
+""" Author: Mazoz
     deletes out-of-date archives, using the function"""
 from fabric.api import *
 
 
-env.hosts = ['54.89.109.168', '54.157.141.86']
+env.hosts = ['54.173.140.10', '3.85.1.16']
 env.user = "ubuntu"
 
 
