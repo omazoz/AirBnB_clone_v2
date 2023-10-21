@@ -1,16 +1,14 @@
 #!/usr/bin/python3
-"""a script that starts a Flask web application"""
-
+""" Flask web application """
 from flask import Flask
 
-# Create a Flask application
 app = Flask(__name__)
 
-# Define a route and a view function
 
-@app.route('/', strict_slashes=False)
-def hello_hbnb():
-    return 'Hello HBNB!'
+@app.route("/", strict_slashes=False)
+def hello_route():
+    """ Returns a string at the root route """
+    return "Hello HBNB!"
 
 
 if __name__ == "__main__":
