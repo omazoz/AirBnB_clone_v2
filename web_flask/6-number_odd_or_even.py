@@ -1,42 +1,54 @@
 #!/usr/bin/python3
+""" Starts a Flash Web Application """
+from flask import Flask, render_template
+app = Flask(__name__)
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 
-"""Gather data from an API"""
 
-import requests
-import sys
+@app.route('/', strict_slashes=False)
+def hello_hbnb():
+    """ Prints a Message when / is called """
+    return 'Hello HBNB!'
+
+
+@app.route('/hbnb', strict_slashes=False)
+def hbnb():
+    """ Prints a Message when /hbnb is called """
+    return 'HBNB'
+
+
+@app.route('/c/<text>', strict_slashes=False)
+def c_is_fun(text):
+    """ Prints a Message when /c is called """
+    return "C " + text.replace('_', ' ')
+
+
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_is_cool(text='is_cool'):
+    """ Prints a Message when /python is called """
+    return "Python " + text.replace('_', ' ')
+
+
+@app.route('/number/<int:n>', strict_slashes=False)
+def is_n_number(n):
+    """ Prints a Message when /number is called only if n is an int"""
+    return "{:d} is a number".format(n)
+
+
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template(n):
+    """ display a HTML page only if n is an integer """
+    return render_template('5-number.html', value=n)
+
+
+@app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
+def odd_or_even(n):
+    """ display a HTML page only if n is an integer """
+    return render_template('6-number_odd_or_even.html', value=n)
 
 
 if __name__ == "__main__":
-    id = sys.argv[1]
-    user_response = requests.get(
-        "https://jsonplaceholder.typicode.com/users/" + id)
-    todos_response = requests.get("https://jsonplaceholder.typicode.com/todos")
-
-    user_data = user_response.json()
-    todos_data = todos_response.json()
-
-    nbr_task = 0
-    nbr_cpt_task = 0
-    title_task = []
-
-    for i in todos_data:
-        if i["userId"] == int(id):
-            nbr_task += 1
-            if i["completed"] == 1:
-                title_task.append(i["title"])
-
-    """
-    dc_names = {k: v for d in user_data for k, v in d.items()}
-    dc_names = {}
-    for d in range(len(user_data)):
-        dc_names.update(user_data[d])
-    print(user_data[4])
-    """
-
-    print(
-        f"Employee {user_response.json().get('name')}"
-        f" is done with tasks({len(title_task)}/{nbr_task}):")
-
-    for i in title_task:
-        print(f"\t {i}")
-    
+    """ Main Function """
+    app.run(host='0.0.0.0', port=5000)
